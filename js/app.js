@@ -1,6 +1,7 @@
 import * as store from './store.js';
 import { workDates, dayNumber } from './lib/workdays.js';
 import { taskKpis, ownerProgress } from './lib/kpi.js';
+import { bootErrorMessage } from './lib/boot.js';
 
 const TABS = [
   ['overview', 'Overview'],
@@ -451,5 +452,8 @@ function initTheme() {
 initTheme();
 store.subscribe(render);
 store.init().catch((e) => {
-  showToast(e?.message || String(e));
+  // Start-up failed before anything was drawn: say so on the page itself, and keep it there.
+  const boot = document.getElementById('boot');
+  if (boot) boot.textContent = bootErrorMessage(e);
+  else showToast(e?.message || String(e));
 });

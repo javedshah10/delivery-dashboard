@@ -10,7 +10,9 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="container" id="app"></div>
-  <script type="module" src="js/app.js"></script>
+  <div class="container" id="app"><p id="boot">Loading the dashboard...</p></div>
+  <noscript><p>The dashboard needs JavaScript. Please turn it on and reload.</p></noscript>
+  <script type="module" src="js/app.js"
+          onerror="var b=document.getElementById('boot'); if(b) b.textContent='The dashboard could not start. Check your internet connection, then press Ctrl+F5.';"></script>
 </body>
 </html>

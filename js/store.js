@@ -1,3 +1,4 @@
+import { withTimeout } from './lib/boot.js';
 let supabase = null;
 let onChange = () => {};
 let state = emptyState();
@@ -177,8 +178,11 @@ export async function init() {
     notify();
     return;
   }
-  const { createClient } = await import(
-    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm'
+  // An outside server: give up after 15 seconds instead of leaving the page waiting for ever.
+  const { createClient } = await withTimeout(
+    import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm'),
+    15000,
+    'the sign-in library did not arrive in 15 seconds',
   );
   supabase = createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
   state.preview = false;
